@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>BudgetSpawn — put money away for what's coming</title>
+<meta name="description" content="BudgetSpawn is a sinking-fund manager. Set what you need and when, put money away every payday, and borrow from yourself instead of a lender. Works entirely offline.">
+<link rel="icon" href="logo.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --ink:#0A0C10; --surface:#151A22; --raise:#1C232D; --line:#242C38;
+  --text:#E8EBF0; --muted:#96A0B0; --dim:#6B7583;
+  --blue:#4A9BF0; --green:#3ECF8E;
+  --sans:'Archivo',system-ui,sans-serif; --mono:'IBM Plex Mono',ui-monospace,monospace;
+}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--ink);color:var(--text);font-family:var(--sans);font-size:17px;line-height:1.65;-webkit-font-smoothing:antialiased}
+.wrap{max-width:1040px;margin:0 auto;padding:0 24px}
+a{color:var(--blue)}
+a:focus-visible{outline:2px solid var(--blue);outline-offset:3px;border-radius:2px}
+
+header{padding:28px 0 8px}
+.brandbar{display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap}
+.brand{display:flex;align-items:center;gap:11px;font-weight:700;letter-spacing:-.02em;font-size:19px}
+.mark{width:32px;height:32px;border-radius:9px;flex:none;display:block}
+.navlink{font-size:14px;color:var(--muted);text-decoration:none}
+.navlink:hover{color:var(--text)}
+
+.hero{padding:56px 0 40px;display:grid;grid-template-columns:1.1fr .9fr;gap:56px;align-items:center}
+.eyebrow{font-family:var(--mono);font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--green);margin:0 0 20px}
+h1{font-size:clamp(36px,5vw,56px);line-height:1.04;letter-spacing:-.035em;font-weight:700;margin:0 0 22px}
+h1 em{font-style:normal;color:var(--blue)}
+.lede{font-size:17px;color:var(--muted);margin:0 0 28px;max-width:34em}
+.status{display:inline-flex;align-items:center;gap:10px;font-family:var(--mono);font-size:13px;color:var(--muted);border:1px solid var(--line);border-radius:999px;padding:8px 16px;margin:0}
+.dot{width:7px;height:7px;border-radius:50%;background:var(--green);flex:none}
+
+.shot{display:flex;justify-content:center}
+.shot img{width:100%;max-width:300px;height:auto;display:block;border:1px solid var(--line);border-radius:22px}
+
+section{padding:56px 0;border-top:1px solid var(--line)}
+h2.sec{font-size:13px;font-family:var(--mono);letter-spacing:.14em;text-transform:uppercase;color:var(--dim);font-weight:500;margin:0 0 28px}
+.three{display:grid;grid-template-columns:repeat(3,1fr);gap:32px}
+.three h3{font-size:21px;letter-spacing:-.02em;margin:0 0 10px;font-weight:500}
+.three p{margin:0;color:var(--muted);font-size:16px}
+
+.pledge{display:grid;grid-template-columns:1fr 1fr;gap:48px;align-items:start}
+.pledge h2{font-size:clamp(26px,3.4vw,34px);letter-spacing:-.03em;line-height:1.15;margin:0 0 18px;font-weight:700}
+.pledge p{color:var(--muted);margin:0 0 16px}
+.facts{list-style:none;margin:0;padding:0}
+.facts li{padding:14px 0;border-bottom:1px solid var(--line);display:flex;gap:14px;align-items:baseline;font-size:16px}
+.facts li:last-child{border-bottom:0}
+.facts b{font-family:var(--mono);font-size:12px;color:var(--green);letter-spacing:.08em;flex:none;width:52px}
+
+.tiers{display:grid;grid-template-columns:1fr 1fr;gap:20px}
+.tier{border:1px solid var(--line);border-radius:16px;padding:26px}
+.tier h3{margin:0 0 6px;font-size:22px;letter-spacing:-.02em;font-weight:500}
+.tier .price{font-family:var(--mono);font-size:13px;color:var(--dim);margin:0 0 16px}
+.tier p{margin:0;color:var(--muted);font-size:16px}
+.tier.pro{border-color:#2E3A49}
+
+footer{border-top:1px solid var(--line);padding:36px 0 56px;color:var(--dim);font-size:14.5px}
+footer .wrap{display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap}
+footer a{color:var(--muted)}
+
+@media (max-width:860px){
+  .hero{grid-template-columns:1fr;gap:40px;padding-top:40px}
+  .three,.pledge,.tiers{grid-template-columns:1fr;gap:28px}
+}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap brandbar">
+    <div class="brand"><img class="mark" src="logo.png" alt=""> BudgetSpawn</div>
+    <a class="navlink" href="privacy.html">Privacy policy</a>
+  </div>
+</header>
+
+<main>
+<div class="wrap hero">
+  <div>
+    <p class="eyebrow">Sinking funds, done properly</p>
+    <h1>Money you'll need later, <em>put away on purpose</em>&#8230; now!</h1>
+    <p class="lede">New Tyres in 3 yrs from now. Annual school fees in January. That holiday you keep postponing. From a few simple prompts, BudgetSpawn works out what each one costs you per PAYDAY cycle (Daily, Weekly, Monthly), then keeps count &#8212; so the bill arrives and the money is already there. And you remain in control of your MONEY and can even withdraw or loan against it, intelligently! All in the palm of your hand, literally&#8230; no more guesswork!!!</p>
+    <p class="status"><span class="dot"></span> In testing. Android first, iOS to follow.</p>
+  </div>
+
+  <div class="shot">
+    <img src="dashboard.jpg" alt="The BudgetSpawn dashboard, showing what is due this payday, what is still outstanding and what is already saved.">
+  </div>
+</div>
+
+<section>
+  <div class="wrap">
+    <h2 class="sec">How it works</h2>
+    <div class="three">
+      <div>
+        <h3>Spawn a goal</h3>
+        <p>Say what it costs and when you need it. BudgetSpawn allows for inflation and divides the rest across your paydays &#8212; weekly, fortnightly, monthly, whatever you're actually paid.</p>
+      </div>
+      <div>
+        <h3>Inject on payday</h3>
+        <p>Put in what you can spare. It's split across your goals, oldest debt first, and the split always adds back to the exact amount you entered.</p>
+      </div>
+      <div>
+        <h3>Borrow from yourself</h3>
+        <p>Short this month? Take a loan against your own savings instead of a lender. Interest is charged deliberately &#8212; and it comes back to you, not to anyone else.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap pledge">
+    <div>
+      <h2>Your money stays on your phone.</h2>
+      <p>BudgetSpawn is not a bank and it isn't connected to one. There is no account to create, no password, no server holding your figures. The app has no internet permission at all &#8212; it cannot send your data anywhere, because it cannot reach anywhere.</p>
+      <p>That's a design decision, not a limitation. Read the <a href="privacy.html">privacy policy</a> for the full detail.</p>
+    </div>
+    <ul class="facts">
+      <li><b>No</b> <span>Sign-up, e-mail address or account</span></li>
+      <li><b>No</b> <span>Analytics, trackers or advertising</span></li>
+      <li><b>No</b> <span>Cloud backup of your ledger unless you ask for one</span></li>
+      <li><b>Yes</b> <span>A PIN you set, that never leaves the device</span></li>
+      <li><b>Yes</b> <span>Uninstall takes every figure with it</span></li>
+    </ul>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <h2 class="sec">Free and Pro</h2>
+    <div class="tiers">
+      <div class="tier">
+        <h3>Free</h3>
+        <p class="price">Free, and offline</p>
+        <p>Goals, paydays, injections, borrowing, the buffer, the full ledger and every printed statement. Everything above is the free app. It is not a trial.</p>
+      </div>
+      <div class="tier pro">
+        <h3>Pro</h3>
+        <p class="price">Monthly subscription &#183; in development</p>
+        <p>The features that need a connection to work: your figures kept in step across more than one device, a product looked up the moment you scan it, and everyone in a shared savings group seeing the same record. Free stays offline and stays free.</p>
+      </div>
+    </div>
+  </div>
+</section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <span>&#169; 2026 BudgetSpawn</span>
+    <span><a href="privacy.html">Privacy policy</a> &#183; <a href="mailto:developer@budgetspawn.com">developer@budgetspawn.com</a></span>
+  </div>
+</footer>
+
+</body>
+</html>
