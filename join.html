@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>You have been invited to a StokVel</title>
+<meta name="description" content="Somebody has invited you to join their StokVel on BudgetSpawn.">
+<meta property="og:title" content="You have been invited to a StokVel">
+<meta property="og:description" content="Read the terms, then join on your own phone. BudgetSpawn keeps your money picture on your phone and nowhere else.">
+<style>
+:root{
+  --bg:#0E0F11; --card:#17191C; --line:#2A2D31;
+  --ink:#F2F4F6; --dim:#A6ADB5; --faint:#767D85;
+  --green:#22C55E; --blue:#3B82F6; --amber:#F59E0B;
+}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+body{margin:0;background:var(--bg);color:var(--ink);
+  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;
+  line-height:1.55;padding:22px 18px 48px}
+.wrap{max-width:520px;margin:0 auto}
+.brand{display:flex;align-items:center;gap:10px;margin-bottom:26px}
+.dot{width:30px;height:30px;border-radius:50%;border:2px solid var(--green);
+  display:flex;align-items:center;justify-content:center;font-weight:800;font-size:14px}
+.brand b{font-size:16px;font-weight:700;letter-spacing:.2px}
+h1{font-size:23px;line-height:1.3;margin:0 0 6px;font-weight:800}
+.sub{color:var(--dim);font-size:15px;margin:0 0 22px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:14px;
+  padding:16px 16px 6px;margin-bottom:18px}
+.row{display:flex;justify-content:space-between;gap:14px;
+  padding:9px 0;border-bottom:1px solid var(--line)}
+.row:last-child{border-bottom:0}
+.row .k{color:var(--dim);font-size:14px}
+.row .v{font-weight:700;font-size:14px;text-align:right}
+.big{font-size:19px;font-weight:800}
+.step{display:flex;gap:12px;margin:0 0 16px}
+.num{flex:0 0 25px;height:25px;border-radius:50%;background:var(--card);
+  border:1px solid var(--line);display:flex;align-items:center;justify-content:center;
+  font-size:13px;font-weight:800;color:var(--dim)}
+.step p{margin:1px 0 0;font-size:15px;color:var(--dim)}
+.step p b{color:var(--ink);font-weight:700}
+a.btn,button.btn{display:block;width:100%;text-align:center;text-decoration:none;
+  padding:15px 14px;border-radius:12px;font-size:16px;font-weight:800;
+  border:0;cursor:pointer;margin-bottom:11px;font-family:inherit}
+.primary{background:var(--green);color:#07130C}
+.ghost{background:transparent;color:var(--ink);border:1px solid var(--line)!important}
+.code{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:12px;
+  word-break:break-all;background:#0A0B0D;border:1px solid var(--line);
+  border-radius:10px;padding:12px;color:var(--dim);max-height:96px;overflow:auto;
+  margin-bottom:11px}
+.note{color:var(--faint);font-size:13px;margin:16px 0 0}
+.warn{background:#1C1508;border:1px solid #4A3708;color:#F5D08A;
+  border-radius:12px;padding:13px 14px;font-size:14px;margin-bottom:18px}
+.ok{display:none;color:var(--green);font-size:14px;font-weight:700;margin:-4px 0 12px}
+h2{font-size:15px;font-weight:800;margin:26px 0 12px;color:var(--dim);
+  text-transform:uppercase;letter-spacing:.6px}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <div class="brand"><div class="dot">B</div><b>BudgetSpawn</b></div>
+
+  <div id="known" hidden>
+    <h1 id="headline">You have been invited to a StokVel</h1>
+    <p class="sub" id="subline"></p>
+    <div class="card" id="terms"></div>
+  </div>
+
+  <div id="unknown" hidden>
+    <h1>Open this on your phone</h1>
+    <p class="sub">This invite only opens properly from the message it arrived in.
+      Tap the link in your WhatsApp or SMS rather than typing the address.</p>
+  </div>
+
+  <h2>How to join</h2>
+
+  <div class="step"><div class="num">1</div><p><b>Install BudgetSpawn</b> from the
+    Play Store. It is free, and it works without the internet.</p></div>
+  <div class="step"><div class="num">2</div><p><b>Come back to this message and
+    tap the link again.</b> Or open the app, choose Join StokVel, and paste your
+    invite.</p></div>
+  <div class="step"><div class="num">3</div><p><b>Read the terms and answer.</b>
+    Your phone gives you a short code — send it back to the person who invited you
+    and they add you to the board.</p></div>
+
+  <a class="btn primary" id="store"
+     href="https://play.google.com/store/apps/details?id=com.budgetspawn.app">Get BudgetSpawn</a>
+  <button class="btn ghost" id="copy" hidden onclick="copyInvite()">Copy my invite</button>
+  <p class="ok" id="ok">Copied. Open BudgetSpawn, choose Join StokVel, and paste it.</p>
+  <div class="code" id="raw" hidden></div>
+
+  <div class="warn">Nothing on this page is sent anywhere. Your invite is read
+    on your own phone and never leaves it — that is how BudgetSpawn works with
+    money too.</div>
+
+  <p class="note">A StokVel on BudgetSpawn has no bank account and holds no money.
+    It is a shared record of what each member has put in, kept on each person's
+    own phone. Nobody can move your money and nobody borrows from the pool.</p>
+
+</div>
+
+<script>
+var RAW = (location.hash || '').replace(/^#/, '').trim();
+
+function money(n){
+  n = Number(n) || 0;
+  return 'R ' + n.toLocaleString('en-ZA', {minimumFractionDigits: n % 1 ? 2 : 0,
+                                           maximumFractionDigits: 2});
+}
+function rhythm(f){
+  return ({WEEKLY:'a week', FORTNIGHTLY:'a fortnight', MONTHLY:'a month'})[f] || 'a cycle';
+}
+function rhythmPl(f, n){
+  var w = ({WEEKLY:'week', FORTNIGHTLY:'fortnight', MONTHLY:'month'})[f] || 'cycle';
+  return n === 1 ? w : w + 's';
+}
+function pretty(d){
+  if (!d) return '';
+  var p = String(d).split('-');
+  if (p.length !== 3) return d;
+  var M = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+  return Number(p[2]) + ' ' + M[Number(p[1]) - 1] + ' ' + p[0];
+}
+function decode(tail){
+  try{
+    var dot = tail.indexOf('.');
+    if (dot < 0) return null;
+    var b = tail.slice(dot + 1).replace(/-/g,'+').replace(/_/g,'/');
+    while (b.length % 4) b += '=';
+    var txt = decodeURIComponent(escape(atob(b)));
+    return JSON.parse(txt);
+  } catch(e){ return null; }
+}
+function row(k, v, big){
+  return '<div class="row"><span class="k">' + k + '</span><span class="v' +
+         (big ? ' big' : '') + '">' + v + '</span></div>';
+}
+
+var inv = RAW ? decode(RAW) : null;
+
+if (inv && inv.n) {
+  document.getElementById('known').hidden = false;
+  var who = inv.m ? (inv.m + ', you') : 'You';
+  document.getElementById('headline').textContent =
+      who + ' have been invited to join ' + inv.n + '.';
+  document.getElementById('subline').textContent =
+      'Here are the terms, exactly as they were sent to you. Read them before you answer.';
+
+  var h = '';
+  h += row('Your share', money(inv.t), true);
+  h += row('Each ' + rhythm(inv.f), money(inv.c));
+  h += row('Over', inv.k + ' ' + rhythmPl(inv.f, inv.k));
+  if (inv.u) h += row('First one due', pretty(inv.u));
+  if (inv.d) h += row('Pays out', pretty(inv.d));
+  if (Number(inv.p) > 0) h += row('Leaving early costs', inv.p + '%');
+  h += row('Group goals', Number(inv.g) ? 'Allowed, if everyone agrees' : 'Not allowed');
+  document.getElementById('terms').innerHTML = h;
+
+  document.getElementById('copy').hidden = false;
+  var r = document.getElementById('raw');
+  r.hidden = false;
+  r.textContent = location.href;
+} else {
+  document.getElementById('unknown').hidden = false;
+}
+
+function copyInvite(){
+  var text = location.href;
+  function done(){ document.getElementById('ok').style.display = 'block'; }
+  if (navigator.clipboard && navigator.clipboard.writeText) {
+    navigator.clipboard.writeText(text).then(done, fallback);
+  } else { fallback(); }
+  function fallback(){
+    var t = document.createElement('textarea');
+    t.value = text; document.body.appendChild(t); t.select();
+    try { document.execCommand('copy'); done(); } catch(e){}
+    document.body.removeChild(t);
+  }
+}
+</script>
+</body>
+</html>
